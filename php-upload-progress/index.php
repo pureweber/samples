@@ -76,9 +76,6 @@
 <iframe id="hidden_iframe" name="hidden_iframe" src="about:blank" style="display:none;"></iframe>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript">
-var upload_done = false;
-var timerID = null;
-
 function fetch_progress(){
 	$.get('progress.php',{ '<?php echo ini_get("session.upload_progress.name"); ?>' : 'test'}, function(data){
 		var progress = parseInt(data);
@@ -86,15 +83,17 @@ function fetch_progress(){
 		$('#progress .label').html(progress + '%');
 		$('#progress .bar').css('width', progress + '%');
 
-		if(progress >= 100){
-			clearInterval(timerID);
+		if(progress < 100){
+			setTimeout('fetch_progress()', 1000);
+		}else{
+			$('#progress .label').html('完成!');
 		}
 	}, 'html');
 }
 
 $('#upload-form').submit(function(){
 	$('#progress').show();
-	timerID = setInterval('fetch_progress()', 1000);
+	setTimeout('fetch_progress()', 1000);
 });
 </script>
 </body>
