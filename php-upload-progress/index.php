@@ -80,7 +80,7 @@ var upload_done = false;
 var timerID = null;
 
 function fetch_progress(){
-	$.get('progress.php','', function(data){
+	$.get('progress.php',{ '<?php echo ini_get("session.upload_progress.name"); ?>' : 'test'}, function(data){
 		var progress = parseInt(data);
 
 		$('#progress .label').html(progress + '%');
